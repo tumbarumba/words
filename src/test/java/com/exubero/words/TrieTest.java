@@ -3,15 +3,18 @@ package com.exubero.words;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
+import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 
 public class TrieTest {
     @Test
-    public void canAddAWord() {
+    public void canAddAWords() {
         Trie trie = new Trie();
 
+        trie.addWord("woo");
+        trie.addWord("wood");
         trie.addWord("word");
+        trie.addWord("words");
 
-        assertThat(trie.words(), containsInAnyOrder("word"));
+        assertThat(trie.words(), contains("woo", "wood", "word", "words"));
     }
 }
