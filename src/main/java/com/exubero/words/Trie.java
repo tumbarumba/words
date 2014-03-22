@@ -29,6 +29,9 @@ public class Trie {
 
         private TrieNode childNodeFor(char firstChar) {
             int charPos = firstChar - 'a';
+            if (charPos < 0 || charPos >= children.length) {
+                throw new IllegalArgumentException("'" + firstChar + "' is not a valid alphabetic character");
+            }
             if (children[charPos] == null) {
                 children[charPos] = new TrieNode(Character.toString(firstChar));
             }

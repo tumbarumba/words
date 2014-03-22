@@ -1,4 +1,4 @@
-package com.company;
+package com.exubero.words;
 
 public class Main {
 

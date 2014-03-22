@@ -17,4 +17,11 @@ public class TrieTest {
 
         assertThat(trie.words(), contains("woo", "wood", "word", "words"));
     }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void cantAddNonAlphabeticCharacters() {
+        Trie trie = new Trie();
+
+        trie.addWord("a1");
+    }
 }
