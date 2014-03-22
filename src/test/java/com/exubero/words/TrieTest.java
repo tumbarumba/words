@@ -1,8 +1,5 @@
 package com.exubero.words;
 
-import org.hamcrest.Matcher;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
