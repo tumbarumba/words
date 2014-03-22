@@ -1,6 +1,8 @@
 .gradle
+.idea
 build
 out
+words.i*
 *.class
 
 # Package Files #
