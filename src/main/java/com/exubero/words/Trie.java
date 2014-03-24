@@ -27,13 +27,26 @@ public class Trie {
 
         }
 
-        private TrieNode childNodeFor(char firstChar) {
-            int charPos = firstChar - 'a';
+        public boolean containsWord(String possibleWord) {
+            if (possibleWord.length() == 0) {
+                return isWord;
+            }
+
+            char firstChar = possibleWord.charAt(0);
+            TrieNode childNode = children[(firstChar - 'a')];
+            if (childNode == null) {
+                return false;
+            }
+            return childNode.containsWord(possibleWord.substring(1));
+        }
+
+        private TrieNode childNodeFor(char theChar) {
+            int charPos = theChar - 'a';
             if (charPos < 0 || charPos >= children.length) {
-                throw new IllegalArgumentException("'" + firstChar + "' is not a valid alphabetic character");
+                throw new IllegalArgumentException("'" + theChar + "' is not a valid alphabetic character");
             }
             if (children[charPos] == null) {
-                children[charPos] = new TrieNode(Character.toString(firstChar));
+                children[charPos] = new TrieNode(Character.toString(theChar));
             }
             return children[charPos];
         }
@@ -58,6 +71,10 @@ public class Trie {
 
     public void addWord(String word) {
         root.addWord(word.toLowerCase());
+    }
+
+    public boolean containsWord(String possibleWord) {
+        return root.containsWord(possibleWord);
     }
 
     public List<String> words() {

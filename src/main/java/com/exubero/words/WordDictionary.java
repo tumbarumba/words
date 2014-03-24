@@ -1,11 +1,17 @@
 package com.exubero.words;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Collections;
 import java.util.List;
+import java.util.SortedSet;
+
+import static com.google.common.collect.Collections2.orderedPermutations;
 
 public class WordDictionary {
     public static WordDictionary loadFrom(String resourceName) throws IOException {
@@ -37,5 +43,28 @@ public class WordDictionary {
 
     public List<String> words() {
         return words.words();
+    }
+
+    public List<String> findWordsUsing(String letters) {
+        SortedSet<String> foundWords = Sets.newTreeSet();
+
+        for (String combination : Combinations.of(letters.toLowerCase())) {
+            for (List<Character> permutation : orderedPermutations(Lists.charactersOf(combination))) {
+                String possibleWord = stringFrom(permutation);
+                if (words.containsWord(possibleWord)) {
+                    foundWords.add(possibleWord);
+                }
+            }
+        }
+
+        return ImmutableList.copyOf(foundWords);
+    }
+
+    private String stringFrom(List<Character> characters) {
+        StringBuilder sb = new StringBuilder();
+        for (Character c : characters) {
+            sb.append(c);
+        }
+        return sb.toString();
     }
 }
