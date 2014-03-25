@@ -68,16 +68,22 @@ public class WordDictionary {
         Multiset<Character> letterCounts = letterCountsFrom(letters);
 
         words.visitWords("", (theWord) -> {
-            Multiset<Character> wordLetterCounts = letterCountsFrom(theWord);
-            for (Character c : wordLetterCounts.elementSet()) {
-                if (letterCounts.count(c) < wordLetterCounts.count(c)) {
-                    return;
-                }
+            if (canMakeWord(letterCounts, theWord)) {
+                foundWords.add(theWord);
             }
-            foundWords.add(theWord);
         });
 
         return ImmutableList.copyOf(foundWords);
+    }
+
+    private boolean canMakeWord(Multiset<Character> letterCounts, String theWord) {
+        Multiset<Character> wordLetterCounts = letterCountsFrom(theWord);
+        for (Character c : wordLetterCounts.elementSet()) {
+            if (letterCounts.count(c) < wordLetterCounts.count(c)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private Multiset<Character> letterCountsFrom(String letters) {
