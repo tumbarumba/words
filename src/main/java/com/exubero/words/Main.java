@@ -9,7 +9,7 @@ public class Main {
         System.out.println("Loading dictionary...");
         WordDictionary dictionary = loadDictionary();
         System.out.println("Looking up words for " + args[0]);
-        List<String> words = dictionary.findWordsUsing(args[0]);
+        List<String> words = dictionary.fullSearch(args[0]);
         System.out.println("Found:");
         int count = 0;
         for (String word : words) {

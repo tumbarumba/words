@@ -1,7 +1,9 @@
 package com.exubero.words;
 
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 
 import java.io.BufferedReader;
@@ -45,7 +47,7 @@ public class WordDictionary {
         return words.words();
     }
 
-    public List<String> findWordsUsing(String letters) {
+    public List<String> combinatorialSearch(String letters) {
         SortedSet<String> foundWords = Sets.newTreeSet();
 
         for (String combination : Combinations.of(letters.toLowerCase())) {
@@ -58,6 +60,32 @@ public class WordDictionary {
         }
 
         return ImmutableList.copyOf(foundWords);
+    }
+
+    public List<String> fullSearch(String letters) {
+        SortedSet<String> foundWords = Sets.newTreeSet();
+
+        Multiset<Character> letterCounts = letterCountsFrom(letters);
+
+        words.visitWords("", (theWord) -> {
+            Multiset<Character> wordLetterCounts = letterCountsFrom(theWord);
+            for (Character c : wordLetterCounts.elementSet()) {
+                if (letterCounts.count(c) < wordLetterCounts.count(c)) {
+                    return;
+                }
+            }
+            foundWords.add(theWord);
+        });
+
+        return ImmutableList.copyOf(foundWords);
+    }
+
+    private Multiset<Character> letterCountsFrom(String letters) {
+        Multiset<Character> letterCounts = HashMultiset.create();
+        for (Character c : letters.toCharArray()) {
+            letterCounts.add(c);
+        }
+        return letterCounts;
     }
 
     private String stringFrom(List<Character> characters) {
