@@ -6,14 +6,10 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Loading dictionary...");
         WordDictionary dictionary = loadDictionary();
-        System.out.println("Looking up words for " + args[0]);
         List<String> words = dictionary.fullSearch(args[0]);
-        System.out.println("Found:");
-        int count = 0;
         for (String word : words) {
-            System.out.println("\t" + ++count + ":\t" + word);
+            System.out.println(word);
         }
     }
 
