@@ -63,17 +63,38 @@ public class WordDictionary {
     }
 
     public List<String> fullSearch(String letters) {
-        SortedSet<String> foundWords = Sets.newTreeSet();
 
         Multiset<Character> letterCounts = letterCountsFrom(letters);
 
+        SortedSet<String> foundWords = Sets.newTreeSet();
+        if (letterCounts.contains('?')) {
+            char[] allLetters = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+            for (char letter : allLetters) {
+                Multiset<Character> newLetterCounts = replaceWildcardWith(letterCounts, letter);
+                foundWords.addAll(wordsFromLetters(newLetterCounts));
+            }
+        } else {
+            foundWords.addAll(wordsFromLetters(letterCounts));
+        }
+
+        return ImmutableList.copyOf(foundWords);
+    }
+
+    private Multiset<Character> replaceWildcardWith(Multiset<Character> letterCounts, char letter) {
+        Multiset<Character> newLetterCounts = HashMultiset.create(letterCounts);
+        newLetterCounts.remove('?');
+        newLetterCounts.add(letter);
+        return newLetterCounts;
+    }
+
+    private SortedSet<String> wordsFromLetters(Multiset<Character> letterCounts) {
+        SortedSet<String> foundWords = Sets.newTreeSet();
         words.visitWords("", (theWord) -> {
             if (canMakeWord(letterCounts, theWord)) {
                 foundWords.add(theWord);
             }
         });
-
-        return ImmutableList.copyOf(foundWords);
+        return foundWords;
     }
 
     private boolean canMakeWord(Multiset<Character> letterCounts, String theWord) {

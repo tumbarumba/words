@@ -29,4 +29,9 @@ public class FindWordsTest {
         assertThat(words, containsInAnyOrder("aa", "ab", "ba"));
     }
 
+    @Test
+    public void canFindWordsUsingFullSearchWithWildcard() {
+        List<String> words = dictionary.fullSearch("a?");
+        assertThat(words, containsInAnyOrder("aa", "ab", "ba", "ca"));
+    }
 }
